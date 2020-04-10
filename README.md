@@ -1,50 +1,65 @@
 # Introduction
-+ ***Sterilizer***   
-Remove specified symbols  
-移除指定符号字符
-+ ***Validator***   
-Validate input value with sequelize similar interface   
-简单的中文前端校验器，使用和Sequelize基本相同的接口名称，方便前后端代码Review
+
+-   **_Sterilizer_**  
+    Remove specified symbols  
+    移除指定符号字符
+-   **_Validator_**  
+    Validate input value with sequelize similar interface  
+    简单的中文前端校验器，使用和 Sequelize 基本相同的接口名称，方便前后端代码 Review
 
 # Usage
+
 ## Install
-```shell
+
+```
 npm install sterilizer
 ```
 
-## Import
-```javascript
-import { sterilizer, validator } from 'sterilizer'
-```
-
 ## Sterilizer
+
+### interface
+
+`sterilizer(str:string).<method>(symbols:string)+.toString()`
+
 ### example
+
 ```javascript
-sterilizer('abc~!@###-$').kill('-#').toString()
+import { sterilizer } from "sterilizer";
+sterilizer("abc~!@###-$").kill("-#").toString();
 // => bc~!@$
 ```
-### method
-+ `kill(symbols)` remove the specified symbols 
-+ `live(symbols)` remove all the symbols exclude args 
-+ `safe()` remove htmlspecialchars + urlspecialchars 
-+ `removeHSC` remove htmlspecialchars 
-+ `removeURL()` remove urlspecialchars 
-+ `removeSpace()` remove all the space
-+ `remove(words[,replacement])` remove specified words or replace it by replacement
-+ `removeHTMLtag()` remove all the HTML tags
-+ `toString()` output the clean string
 
+### method
+
+-   `kill(symbols)` remove the specified symbols
+-   `live(symbols)` remove all the symbols exclude args
+-   `safe()` remove htmlspecialchars + urlspecialchars
+-   `removeHSC` remove htmlspecialchars
+-   `removeURL()` remove urlspecialchars
+-   `removeSpace()` remove all the space
+-   `remove(words[,replacement])` remove specified words or replace it by replacement
+-   `removeHTMLtag()` remove all the HTML tags
+-   **`toString()`** output the clean string
 
 ## Validator
+
+### interface
+
+`validator(str:string,options:object)`
+
 ### example
+
 ```javascript
-validator('abc123~!',{
-    isOptional:true,
-    isNumeric: true
-})
+import { validator } from "sterilizer";
+validator("abc123~!", {
+    isOptional: true,
+    isNumeric: true,
+});
 // => false
 ```
+
 ### options
+
 ```javascript
 {
     isOptional : true,        // 可选的,匹配'',null,undefined
@@ -67,7 +82,7 @@ validator('abc123~!',{
 
     isEmail: true,            // 限英文域名但支持中文用户名
     isChinese: true,          // 限简体中文字符
-    isIdentityCard: true,     // 限大陆身份证(需2次校验有效性)
+    isIdentityCard: true,     // 限大陆身份证(需二次校验有效性)
     isMobilePhone: true,      // 限中国大陆手机号
 }
 ```
