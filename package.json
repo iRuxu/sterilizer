@@ -1,0 +1,14 @@
+{
+    "name": "sterilizer",
+    "version": "0.0.1",
+    "description": "Simple javascript sterilizer & validator",
+    "keywords": ["sterilizer","validator","sequelize"],
+    "author": "iRuxu",
+    "license": "MIT",
+    "homepage": "https://github.com/iRuxu/sterilizer",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:iRuxu/sterilizer.git"
+    },
+    "main": "index.js"
+}
