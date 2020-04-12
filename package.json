@@ -23,5 +23,8 @@
     "scripts": {
         "build": "npx rollup ./src/index.js --file ./main.js --format cjs",
         "test": "npx jest"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
     }
 }
