@@ -1,4 +1,4 @@
-![Node.js Package](https://github.com/iRuxu/sterilizer/workflows/Node.js%20Package/badge.svg?branch=master)
+![Testing](https://github.com/iRuxu/sterilizer/workflows/Testing/badge.svg?branch=master)
 
 # Introduction
 
