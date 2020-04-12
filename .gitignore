@@ -2,4 +2,3 @@
 node_modules
 test/coverage/
 /todo
-package-lock.json

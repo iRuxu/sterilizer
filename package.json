@@ -1,5 +1,5 @@
 {
-    "name": "sterilizer",
+    "name": "valijs",
     "version": "0.0.1",
     "description": "Simple javascript sterilizer & validator",
     "keywords": [
@@ -22,7 +22,6 @@
     },
     "scripts": {
         "build": "npx rollup ./src/index.js --file ./main.js --format cjs",
-        "publish": "npm run build & npm publish",
         "test": "npx jest"
     }
 }
