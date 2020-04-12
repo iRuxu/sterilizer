@@ -108,6 +108,6 @@ validator(null, {
     isEmail: true,            // 限英文域名但支持中文用户名
     isChinese: true,          // 限简体中文字符
     isIdentityCard: true,     // 限大陆身份证(需二次校验有效性)
-    isMobilePhone: true,      // 限中国大陆手机号
+    isMobilePhone: true,      // 限中国大陆手机号(需验证码校验有效性)
 }
 ```

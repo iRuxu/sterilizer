@@ -102,7 +102,7 @@ class Validator {
 
     // Chinese Characters
     isChinese(status) {
-        return status ? /^[\u4e00-\u9fa5]*$/.test(this.val) : true;
+        return status ? /^[\u4e00-\u9fa5]+$/.test(this.val) : true;
     }
 
     // Chinese Identity Card (should be verfied the validity again)
