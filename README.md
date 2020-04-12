@@ -12,7 +12,7 @@
 ## Install
 
 ```
-npm install valijs
+npm install sterilizer
 ```
 
 ## Import
