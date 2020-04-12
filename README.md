@@ -1,3 +1,5 @@
+![Node.js Package](https://github.com/iRuxu/sterilizer/workflows/Node.js%20Package/badge.svg?branch=master)
+
 # Introduction
 
 -   **_Sterilizer_**  
