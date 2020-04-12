@@ -2,7 +2,11 @@
     "name": "sterilizer",
     "version": "0.0.1",
     "description": "Simple javascript sterilizer & validator",
-    "keywords": ["sterilizer","validator","sequelize"],
+    "keywords": [
+        "sterilizer",
+        "validator",
+        "sequelize"
+    ],
     "author": "iRuxu",
     "license": "MIT",
     "homepage": "https://github.com/iRuxu/sterilizer",
@@ -10,5 +14,15 @@
         "type": "git",
         "url": "git@github.com:iRuxu/sterilizer.git"
     },
-    "main": "index.js"
+    "main": "./main.js",
+    "devDependencies": {
+        "@babel/plugin-transform-modules-commonjs": "^7.9.0",
+        "jest": "^25.3.0",
+        "rollup": "^2.6.0"
+    },
+    "scripts": {
+        "build": "npx rollup ./src/index.js --file ./main.js --format cjs",
+        "publish": "npm run build & npm publish",
+        "test": "npx jest"
+    }
 }

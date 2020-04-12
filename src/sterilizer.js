@@ -1,12 +1,21 @@
-import _typeof from "lib/_typeof.js";
+import _typeof from "./lib/_typeof.js";
 
 /**
  * @desc  Remove specified symbols & charaters
  * @param {string} str string will be sterilized
- * @return a sterilizer object , use .toString() to output the sterilized string
+ * @param {boolean} chain whether use chain
+ * @return {str} the clean string
+ * @return {object} a sterilizer object , when chain is enabled use .toString() to output the sterilized string
  */
 class Sterilizer {
-    constructor(str) {
+    constructor(str,chain) {
+
+        if(_typeof(str)!=='string'){
+            throw new Error(
+                "[Sterilizer::init] params should be string"
+            );
+        }
+
         this._symbols = {
             "`": "`",
             "~": "~",
@@ -42,8 +51,10 @@ class Sterilizer {
             ".": "\\.",
         };
         this.symbols = Object.keys(this._symbols);
-        this.str = str
+        this.regs = Object.values(this._symbols);
+        this.str = str;
         this._str = str;
+        this._chain = chain;
     }
 
     // output the clean string
@@ -53,11 +64,11 @@ class Sterilizer {
 
     // detected the object type
     _detected(o) {
-        let _type = this._typeof(o);
+        let _type = _typeof(o);
         let _iter = ["string", "array", "set"];
         if (!_iter.includes(_type))
             throw new Error(
-                "[Sterilizer::remove] params should be a string or an array"
+                "[Sterilizer::remove] params should be string|array|set"
             );
         return o;
     }
@@ -65,20 +76,26 @@ class Sterilizer {
     // replaced the specified symbols by RegExp
     _sterilize(_toRemove) {
         _toRemove = [..._toRemove].join("");
-        let re = new RegExp(`[${_toRemove}]`, "g");
+        let re = new RegExp(`[${_toRemove}]`, "gm");
         this._str = this._str.replace(re, "");
-        return this;
+        return this._chain ? this : this.toString()
     }
 
     // remove the specified symbols
     kill(germ) {
-        this._detected(germ);
+        let _toRemove = null;
 
         // build unique toRemove set
-        let _toRemove = new WeakSet();
-        let _germ = new WeakSet(germ);
-        for (let char of _germ) {
-            if (this.symbols.includes(char)) _toRemove.add(this._symbols[char]);
+        if (germ == undefined) {
+            _toRemove = new Set(this.regs);
+        } else {
+            this._detected(germ);
+            _toRemove = new Set();
+            let _germ = new Set(germ);
+            for (let char of _germ) {
+                if (this.symbols.includes(char))
+                    _toRemove.add(this._symbols[char]);
+            }
         }
 
         return this._sterilize(_toRemove);
@@ -89,11 +106,10 @@ class Sterilizer {
         this._detected(probiotics);
 
         // build unique toRemove set
-        let _toRemove = new WeakSet(this.symbols);
-        let _probiotics = new WeakSet(probiotics);
-        for (let char of _probiotics) {
+        let _toRemove = new Set(this.regs);
+        for (let char of probiotics) {
             if (this.symbols.includes(char)) {
-                _toRemove.delete(char);
+                _toRemove.delete(this._symbols[char]);
             }
         }
 
@@ -102,7 +118,7 @@ class Sterilizer {
 
     // remove htmlspecialchars + urlspecialchars
     safe() {
-        return this.remove([
+        return this.kill([
             "&",
             "<",
             ">",
@@ -120,33 +136,37 @@ class Sterilizer {
 
     // remove htmlspecialchars
     removeHSC() {
-        return this.remove(["&", "<", ">", '"', "'"]);
+        return this.kill(["&", "<", ">", '"', "'"]);
     }
 
     // remove urlspecialchars
     removeURL() {
-        return this.remove(["+", ":", "/", "?", "=", "&", "#", "%"]);
+        return this.kill(["+", ":", "/", "?", "=", "&", "#", "%"]);
     }
 
     // remove all the space
     removeSpace() {
-        this._str = this._str.replace(/\s/g, "");
-        return this;
+        this._str = this._str.replace(/\s/gm, "");
+        return this._chain ? this : this.toString()
     }
 
     // remove specified charaters
     remove(words, replacement) {
-        let re = new RegExp(`${words}`, "g");
-        replacement !== undefined ? replacement : "";
+        let re = new RegExp(`${words}`, "gm");
+        replacement = replacement !== undefined ? replacement : "";
         this._str = this._str.replace(re, replacement);
-        return this
+        return this._chain ? this : this.toString()
     }
 
     // remove all the HTML tags
     removeHTMLtag() {
-        this._str = this._str.replace(/<[^>]+>/g,'')
-        return this
+        this._str = this._str.replace(/<[^>]+>/gm, "");
+        return this._chain ? this : this.toString()
     }
 }
 
-export default Sterilizer
+function sterilizer(str,chain=false) {
+    return new Sterilizer(str,chain);
+}
+
+export { Sterilizer, sterilizer };

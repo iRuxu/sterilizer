@@ -5,7 +5,7 @@
     移除指定符号字符
 -   **_Validator_**  
     Validate input value with sequelize similar interface  
-    简单的中文前端校验器，使用和 Sequelize 基本相同的接口名称，方便前后端代码 Review
+    简单的中文前端校验器，使用和 Sequelize 基本相同的接口名称，方便前后端代码保持一致
 
 # Usage
 
@@ -15,17 +15,36 @@
 npm install sterilizer
 ```
 
+## Import
+
+ES6
+
+```javascript
+import { sterilizer, validator } from "sterilizer/src/index.js";
+```
+
+Node.js
+
+```javascript
+const { sterilizer, validator } = require("sterilizer");
+```
+
 ## Sterilizer
 
 ### interface
 
-`sterilizer(str:string).<method>(symbols:string)+.toString()`
+`sterilizer(str:string,chain:boolean).<method>(symbols:string)+.toString()?`
 
 ### example
 
 ```javascript
-import { sterilizer } from "sterilizer";
-sterilizer("abc~!@###-$").kill("-#").toString();
+sterilizer("abc~!@###-$").kill(); //移除所有符号字符
+// => abc
+sterilizer("abc~!@###-$").kill("-#"); //移除指定符号
+// => abc~!@$
+sterilizer("abc~!@###-$").live("@"); //移除除指定符号外的所有符号字符
+// => abc@
+sterilizer("abc~!@###-$", true).kill("-#").remove("a").toString(); //链式调用
 // => bc~!@$
 ```
 
@@ -34,12 +53,12 @@ sterilizer("abc~!@###-$").kill("-#").toString();
 -   `kill(symbols)` remove the specified symbols
 -   `live(symbols)` remove all the symbols exclude args
 -   `safe()` remove htmlspecialchars + urlspecialchars
--   `removeHSC` remove htmlspecialchars
+-   `removeHSC()` remove htmlspecialchars
 -   `removeURL()` remove urlspecialchars
 -   `removeSpace()` remove all the space
 -   `remove(words[,replacement])` remove specified words or replace it by replacement
 -   `removeHTMLtag()` remove all the HTML tags
--   **`toString()`** output the clean string
+-   `toString()` when chain is enabled should use toString to output the result
 
 ## Validator
 
@@ -50,12 +69,15 @@ sterilizer("abc~!@###-$").kill("-#").toString();
 ### example
 
 ```javascript
-import { validator } from "sterilizer";
 validator("abc123~!", {
     isOptional: true,
     isNumeric: true,
 });
 // => false
+validator(null, {
+    isOptional: true,
+});
+// => true
 ```
 
 ### options
@@ -73,13 +95,14 @@ validator("abc123~!", {
 
     isNumeric: true,          // 只允许数字
     isInt: true,              // 检查有效的整数
-    isFloat: true,            // 检查有效的浮点数
+    isFloat: true,            // 检查有效的浮点数,可以为整数
     max: 23,                  // 仅允许值 <= 23
     min: 23,                  // 仅允许值 >= 23
 
     isIn: ['foo', 'bar'],     // 检查值是其中之一
     notIn: ['foo', 'bar'],    // 检查值不是这些之一
 
+    //中文
     isEmail: true,            // 限英文域名但支持中文用户名
     isChinese: true,          // 限简体中文字符
     isIdentityCard: true,     // 限大陆身份证(需二次校验有效性)

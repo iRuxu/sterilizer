@@ -1,4 +1,4 @@
-import _typeof from "lib/_typeof.js";
+import _typeof from "./lib/_typeof.js";
 
 /**
  * @desc  Validate input value with sequelize similar interface
@@ -10,31 +10,28 @@ class Validator {
     constructor(val, opt) {
         this.val = val;
         this.opt = opt || {};
-        this._check(this.val, this.opt);
     }
 
-    _check() {
+    check() {
         try {
             // if it sets optional && invalid value
             if (this.opt.isOptional == true) {
-                if (this.isOptional(this.val)) {
+                if (this.isOptional()) {
                     return true;
                 }
             }
 
             // check all the conditions are right
-            for (let rule in opt) {
+            for (let rule in this.opt) {
                 if (rule == "isOptional") continue;
-                if (!this[rule](opt.this[rule])) {
+                if (!this[rule](this.opt[rule])) {
                     return false;
                 }
             }
 
             return true;
         } catch (e) {
-            throw new Error(
-                "[Validator::_check] unexpected error,please check your input"
-            );
+            console.error(e)
         }
     }
 
@@ -54,7 +51,7 @@ class Validator {
     }
 
     len(range) {
-        let length = str.length;
+        let length = this.val.length;
         if (_typeof(range) == "array") {
             return length >= range[0] && length <= range[1];
         }
@@ -76,52 +73,63 @@ class Validator {
     }
 
     isAlpha(status) {
-        return status ? /^[A-Z]+$/i.test(this.val) : true
+        return status ? /^[A-Z]+$/i.test(this.val) : true;
     }
 
-    isAlphanumeric(status){
-        return status ? /^[A-Z0-9]+$/i.test(this.val) : true
+    isAlphanumeric(status) {
+        return status ? /^[A-Z0-9]+$/i.test(this.val) : true;
     }
 
-    isNumeric(status){
-        return status ? /^[0-9]+$/.test(this.val) : true
+    isNumeric(status) {
+        return status ? /^[0-9]+$/.test(this.val) : true;
     }
 
-    isInt(status){
-        return status ? /^(?:[-+]?(?:0|[1-9][0-9]*))$/.test(this.val) : true
+    isInt(status) {
+        return status ? /^(?:[-+]?(?:0|[1-9][0-9]*))$/.test(this.val) : true;
     }
 
-    isFloat(status){
-        return status ? /^[-+]?[0-9]*\.?[0-9]+$/.test(this.val) : true
+    isFloat(status) {
+        return status ? /^[-+]?[0-9]*\.?[0-9]+$/.test(this.val) : true;
     }
 
-    max(maxValue){
-        return this.val <= maxValue
+    max(maxValue) {
+        return this.val <= maxValue;
     }
 
-    min(minValue){
-        return this.val >= minValue
+    min(minValue) {
+        return this.val >= minValue;
     }
 
     // Chinese Characters
-    isChinese(status){
-        return status ? /^[\u4e00-\u9fa5]$/.test(this.val) : true
+    isChinese(status) {
+        return status ? /^[\u4e00-\u9fa5]*$/.test(this.val) : true;
     }
 
     // Chinese Identity Card (should be verfied the validity again)
-    isIdentityCard(status){
-        return status ? /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(this.val) : true
+    isIdentityCard(status) {
+        return status
+            ? /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(
+                this.val
+            )
+            : true;
     }
 
     // Chinese Mobile Phone Number
-    isMobilePhone(status){
-        return status ? /^1[3456789]\d{9}$/.test(this.val) : true
+    isMobilePhone(status) {
+        return status ? /^1[3456789]\d{9}$/.test(this.val) : true;
     }
 
     // Only English domain
-    isEmail(){
-        return status ? /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(this.val) : true
+    isEmail(status) {
+        return status
+            ? /^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/.test(this.val)
+            : true;
     }
 }
 
-export default Validator;
+function validator(val, opt) {
+    const ins = new Validator(val, opt);
+    return ins.check();
+}
+
+export { Validator, validator };
