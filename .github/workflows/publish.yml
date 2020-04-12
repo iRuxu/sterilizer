@@ -1,10 +1,10 @@
 name: Node.js Package
 
-# on: [push]
+on: [push]
 
-on:
-  release:
-    types: [created]
+# on:
+#   release:
+#     types: [created]
 
 jobs:
 
