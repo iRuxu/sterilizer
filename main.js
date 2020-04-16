@@ -283,7 +283,7 @@ class Validator {
 
     // Chinese Characters
     isChinese(status) {
-        return status ? /^[\u4e00-\u9fa5]*$/.test(this.val) : true;
+        return status ? /^[\u4e00-\u9fa5]+$/.test(this.val) : true;
     }
 
     // Chinese Identity Card (should be verfied the validity again)
@@ -304,6 +304,13 @@ class Validator {
     isEmail(status) {
         return status
             ? /^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/.test(this.val)
+            : true;
+    }
+
+    // not empty allowed
+    notEmpty(status){
+        return status
+            ? !/\s/gm.test(this.val)
             : true;
     }
 }

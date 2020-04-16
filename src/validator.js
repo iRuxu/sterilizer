@@ -125,6 +125,13 @@ class Validator {
             ? /^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/.test(this.val)
             : true;
     }
+
+    // not empty allowed
+    notEmpty(status){
+        return status
+            ? !/\s/gm.test(this.val)
+            : true;
+    }
 }
 
 function validator(val, opt) {

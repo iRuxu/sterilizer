@@ -22,7 +22,7 @@ npm install sterilizer
 ES6
 
 ```javascript
-import { sterilizer, validator } from "sterilizer/src/index.js";
+import { sterilizer, validator } from "sterilizer/index.js";
 ```
 
 Node.js
@@ -88,6 +88,7 @@ validator(null, {
 {
     isOptional : true,        // 可选的,匹配'',null,undefined
     len: [2,10]或5或'5',      // 仅允许指定长度或在指定区间的值
+    notEmpty:true,            // 不允许出现空字符串
 
     is: /^[a-z]+$/i,          // 匹配这个 RegExp
     not: /^[a-z]+$/i,         // 不匹配 RegExp

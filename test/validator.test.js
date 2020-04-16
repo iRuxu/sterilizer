@@ -204,4 +204,13 @@ describe("sterilizer testing", () => {
         })).toEqual(false);
     });
 
+    test("notEmpty", () => {
+        expect(validator("abc", {
+            notEmpty: true,
+        })).toEqual(true);
+        expect(validator('a b c', {
+            notEmpty: true,
+        })).toEqual(false);
+    });
+
 });
