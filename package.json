@@ -1,6 +1,6 @@
 {
     "name": "sterilizer",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Simple javascript sterilizer & validator",
     "keywords": [
         "sterilizer",
@@ -21,7 +21,7 @@
         "rollup": "^2.6.0"
     },
     "scripts": {
-        "build": "npx rollup ./src/index.js --file ./main.js --format cjs",
+        "build": "npx rollup ./index.js --file ./main.js --format cjs",
         "test": "npx jest"
     }
 }
