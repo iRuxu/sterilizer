@@ -40,11 +40,11 @@ const { sterilizer, validator } = require("sterilizer");
 ### example
 
 ```javascript
-sterilizer("abc~!@###-$").kill(); //移除所有符号字符
+sterilizer("abc~!@###-$").kill().toString(); //移除所有符号字符
 // => abc
-sterilizer("abc~!@###-$").kill("-#"); //移除指定符号
+sterilizer("abc~!@###-$").kill("-#").toString(); //移除指定符号
 // => abc~!@$
-sterilizer("abc~!@###-$").live("@"); //移除除指定符号外的所有符号字符
+sterilizer("abc~!@###-$").live("@").toString(); //移除除指定符号外的所有符号字符
 // => abc@
 sterilizer("abc~!@###-$", true).kill("-#").remove("a").toString(); //链式调用
 // => bc~!@$
@@ -52,6 +52,7 @@ sterilizer("abc~!@###-$", true).kill("-#").remove("a").toString(); //链式调�
 
 ### method
 
+#### chain
 -   `kill(symbols)` remove the specified symbols
 -   `live(symbols)` remove all the symbols exclude args
 -   `safe()` remove htmlspecialchars + urlspecialchars
@@ -60,7 +61,12 @@ sterilizer("abc~!@###-$", true).kill("-#").remove("a").toString(); //链式调�
 -   `removeSpace()` remove all the space
 -   `remove(words[,replacement])` remove specified words or replace it by replacement
 -   `removeHTMLtag()` remove all the HTML tags
--   `toString()` when chain is enabled should use toString to output the result
+
+#### output
+-   `toString()` output the result
+
+#### other
++ `has([symbol])` return boolean
 
 ## Validator
 

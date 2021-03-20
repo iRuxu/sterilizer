@@ -3,12 +3,11 @@ import _typeof from "./lib/_typeof.js";
 /**
  * @desc  Remove specified symbols & charaters
  * @param {string} str string will be sterilized
- * @param {boolean} chain whether use chain
  * @return {str} the clean string
- * @return {object} a sterilizer object , when chain is enabled use .toString() to output the sterilized string
+ * @return {object} a sterilizer object 
  */
 class Sterilizer {
-    constructor(str,chain) {
+    constructor(str) {
 
         if(_typeof(str)!=='string'){
             throw new Error(
@@ -54,7 +53,6 @@ class Sterilizer {
         this.regs = Object.values(this._symbols);
         this.str = str;
         this._str = str;
-        this._chain = chain;
     }
 
     // output the clean string
@@ -78,7 +76,7 @@ class Sterilizer {
         _toRemove = [..._toRemove].join("");
         let re = new RegExp(`[${_toRemove}]`, "gm");
         this._str = this._str.replace(re, "");
-        return this._chain ? this : this.toString()
+        return this
     }
 
     // remove the specified symbols
@@ -147,7 +145,7 @@ class Sterilizer {
     // remove all the space
     removeSpace() {
         this._str = this._str.replace(/\s/gm, "");
-        return this._chain ? this : this.toString()
+        return this
     }
 
     // remove specified charaters
@@ -155,18 +153,29 @@ class Sterilizer {
         let re = new RegExp(`${words}`, "gm");
         replacement = replacement !== undefined ? replacement : "";
         this._str = this._str.replace(re, replacement);
-        return this._chain ? this : this.toString()
+        return this
     }
 
     // remove all the HTML tags
     removeHTMLtag() {
         this._str = this._str.replace(/<[^>]+>/gm, "");
-        return this._chain ? this : this.toString()
+        return this
+    }
+
+    // has symbols
+    isDirty(custom){
+        if(custom){
+            return this.str.includes(custom)
+        }else{
+            return this.symbols.some((item) => {
+                return this.str.includes(item)
+            })
+        }
     }
 }
 
-function sterilizer(str,chain=false) {
-    return new Sterilizer(str,chain);
+function sterilizer(str) {
+    return new Sterilizer(str);
 }
 
 export { Sterilizer, sterilizer };
